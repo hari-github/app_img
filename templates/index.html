@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>LV Image Recognition</title>
+        <meta name="description" content="">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+        <meta name="format-detection" content="telephone=no">
+        <link href='http://fonts.googleapis.com/css?family=Roboto:400,300,700,900|Roboto+Condensed:400,300,700' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" href="../static/dist/css/demo.css">
+        <link rel="stylesheet" href="../static/dist/css/dropify.min.css">
+    </head>
+	<style>
+.testbutton {
+  border-radius: 4px;
+  background-color: #FFD270;
+  border: none;
+  color: #808080;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  padding: 10px;
+  width: 220px;
+  transition: all 0.5s;
+  cursor: pointer;
+  margin: 5px;
+}
+
+.testbutton span {
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  transition: 0.5s;
+}
+
+.testbutton span:after {
+  content: '\00bb';
+  position: absolute;
+  opacity: 0;
+  top: 0;
+  right: -20px;
+  transition: 0.5s;
+}
+
+.testbutton:hover span {
+  padding-right: 25px;
+}
+
+.testbutton:hover span:after {
+  opacity: 1;
+  right: 0;
+}
+</style>
+    <body>
+        <!--  -->
+		
+        <header id="header">
+		<img src="../static/src/images/lv-logo.png" style="float: right;background: snow;" />
+            <hgroup>
+                <h1>LV Image Recognition</h1>
+                <h2>You can find your Plate Number. Just upload an image.</h2>
+            </hgroup>
+        </header>
+
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-sm-6 col-sm-6">
+				
+				<label id = "up-img" for="input-file-events">Upload your Image</label>
+                    <input type="file" id="input-file-events" class="dropify-event"  />   <!-- data-default-file="src/images/car.jpg" -->
+                     <!-- <button class="testbutton" id="PlateNumber"><a href = "/test">Find Your Plate Number</a></button> -->
+					 <button class="testbutton" id="PlateNumber" ><span>Find Your Plate Number</span></button>
+                </div>
+				<div class="col-sm-6" style="margin-top: 25px;"><label> </label>The Plate number of your vehicle is <p id="shownumber">LV 11 SA 2220</p> </div>
+            </div>
+        </div>
+
+        <footer id="footer">
+            <div class="container">
+                <div class="row">
+                    
+                    <div class="col-sm-12 col-xs-12 text-right no-padding-bottom">2018 &copy; <a href="http://www.latentview.com" target="_blank">LatentView</a></div>
+                </div>
+            </div>
+
+        </footer>
+
+        <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script> -->		
+        <script src="../static/dist/js/jquery.min.js"></script>
+        <script src="../static/dist/js/dropify.min.js"></script>
+		
+		
+
+
+
+        <script>
+		
+            $(document).ready(function(){
+			$("#shownumber").hide();
+			
+			
+			$("#PlateNumber").click(function(){
+			 if(document.getElementById("input-file-events").value != "") {
+				var list_nm = document.getElementsByClassName('dropify-filename-inner').text;
+		<!-- alert(list_nm); -->
+   $("#shownumber").show();
+}
+else{
+alert("Please Upload an Image");
+$("#shownumber").hide();
+}
+    
+});
+                 
+                $('.dropify').dropify();
+
+                 
+
+                 
+                var drEvent = $('#input-file-events').dropify();
+				console.log("drEvent",drEvent);
+				
+
+                drEvent.on('dropify.beforeClear', function(event, element){
+                    return confirm("Do you really want to delete \"" + element.file.name + "\" ?");
+                });
+
+                drEvent.on('dropify.afterClear', function(event, element){
+                    alert('File deleted');
+					$("#shownumber").hide();
+                });
+
+                drEvent.on('dropify.errors', function(event, element){
+                    console.log('Has Errors');
+                });
+
+                var drDestroy = $('#input-file-to-destroy').dropify();
+                drDestroy = drDestroy.data('dropify')
+                $('#toggleDropify').on('click', function(e){
+                    e.preventDefault();
+                    if (drDestroy.isDropified()) {
+                        drDestroy.destroy();
+                    } else {
+                        drDestroy.init();
+                    }
+                })
+            });
+        </script>
+    </body>
+</html>
